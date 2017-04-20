@@ -2,6 +2,11 @@
 
 *Parameterised tests, it works with any Runner (Robolectric, Spring, Mockito, and more!)*
 
+![build status](https://img.shields.io/badge/build-info%20=%3E-yellow.svg)
+[![Build Status](https://travis-ci.org/ignaciotcrespo/junitwithparams.svg?branch=master)](https://travis-ci.org/ignaciotcrespo/junitwithparams)
+[![codecov.io](http://codecov.io/github/ignaciotcrespo/junitwithparams/coverage.svg?branch=master)](http://codecov.io/github/ignaciotcrespo/junitwithparams?branch=master)
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/ignaciotcrespo/junitwithparams/blob/master/LICENSE)
+
 ## Example, single parameter
 
 ```java
@@ -72,3 +77,37 @@ To use JUnitWithParams in a Gradle build add this to your dependencies:
 testCompile 'com.github.ignaciotcrespo:junitwithparams:1.0.0'
 ```
 
+# Contribution
+JUnitWithParams is a work in progress, it is stable but of course there are still some edge cases not covered.
+
+You are welcome to contribute to the project, feel free to create a pull request with your changes.
+
+For questions, suggestions or feedback, create an issue in this repository.
+
+# License
+
+JUnitWithParams is released under the [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT).
+
+```
+The MIT License
+
+Copyright (c) 2017, Ignacio Tomas Crespo (itcrespo@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
