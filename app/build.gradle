@@ -1,0 +1,54 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.example.crespo.visiblefortestingx"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+
+        main {
+            java.srcDirs += 'src/main/kotlin'
+        }
+        test {
+            java.srcDirs += 'src/test/java'
+        }
+
+        androidTest {
+            java.srcDirs += ['src/androidTest/java']
+            assets.srcDirs = ['src/main/assets', 'src/debug/assets/']
+        }
+    }
+}
+
+// workaround to add test generated folder
+// https://code.google.com/p/android/issues/detail?id=224272&q=type%3DDefect&sort=status%20id&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars&start=38500
+android.applicationVariants.all {
+    def aptOutputDir = new File(buildDir, "generated/source/apt/${it.unitTestVariant.dirName}")
+    it.unitTestVariant.addJavaSourceFoldersToModel(aptOutputDir)
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:design:25.3.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile project(path: ':junitwithparams')
+}
