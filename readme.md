@@ -3,8 +3,8 @@
 *Parameterised tests, it works with any Runner (Robolectric, Spring, Mockito, and more!)*
 
 ![build status](https://img.shields.io/badge/build-info%20=%3E-yellow.svg)
-[![Build Status](https://travis-ci.org/ignaciotcrespo/junitwithparams.svg?branch=master)](https://travis-ci.org/ignaciotcrespo/junitwithparams)
-[![codecov.io](http://codecov.io/github/ignaciotcrespo/junitwithparams/coverage.svg?branch=master)](http://codecov.io/github/ignaciotcrespo/junitwithparams?branch=master)
+[![Build Status](https://travis-ci.org/ignaciotcrespo/JUnitWithParams.svg?branch=master)](https://travis-ci.org/ignaciotcrespo/JUnitWithParams)
+[![codecov.io](http://codecov.io/github/ignaciotcrespo/JUnitWithParams/coverage.svg?branch=master)](http://codecov.io/github/ignaciotcrespo/JUnitWithParams?branch=master)
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/ignaciotcrespo/junitwithparams/blob/master/LICENSE)
 
 ## Example, single parameter
