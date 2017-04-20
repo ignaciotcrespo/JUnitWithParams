@@ -60,6 +60,13 @@ JUnitWithParams uses the rule `WithParamsRule` to parse the annotation `@WithPar
 Very similar to the great library [JUnitParams](https://github.com/Pragmatists/JUnitParams)
 but not using a JUnit runner, this allows to use parameterised tests with the most used runners (Spring, Robolectric, AndroidJUnit4)
 
+# Current Version
+* The current stable version is `1.0.0`
+* The current snapshot version is `1.0.1-SNAPSHOT`
+
+# Android support
+JUnitWithParams works fine in android, it is compiled with JDK 1.6 and tested on real projects.
+
 ## Quickstart
 
 JUnitWithParams is available as Maven artifact:

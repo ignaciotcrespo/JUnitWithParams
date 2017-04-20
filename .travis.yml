@@ -1,6 +1,6 @@
 ---
 language: java
-script: ./gradlew -b junitwithparams/build.gradle check
+script: gradle -b build.gradle check
 jdk:
 - openjdk7
 

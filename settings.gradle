@@ -1,1 +1,2 @@
-include ':app', ':junitwithparams'
+rootProject.name = 'junitwithparams'
+
