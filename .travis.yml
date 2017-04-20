@@ -1,0 +1,18 @@
+---
+language: java
+script: gradle -b junitwithparams/build.gradle check
+jdk:
+- openjdk7
+
+# get us on the new container based builds, we're not using any fancyness
+sudo: false
+
+branches:
+  only:
+  - master
+notifications:
+  email:
+  - itcrespo@gmail.com
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
