@@ -44,6 +44,7 @@ public class WithParamsRule implements MethodRule {
 
     @VisibleForTesting
     HashMap<String, String> paramsMap = new HashMap<String, String>();
+    private HashSet<String> usedParams = new HashSet<String>();
 
     private Set<String> executedTests = new HashSet<String>();
 
@@ -51,12 +52,14 @@ public class WithParamsRule implements MethodRule {
 
     @Override
     public Statement apply(final Statement base, final FrameworkMethod method, final Object target) {
-        return new ParameterizedStatement(executedTests, paramsMap, method, base, errorCollector);
+        return new ParameterizedStatement(executedTests, paramsMap, method, base, errorCollector, usedParams);
     }
 
     public String get(final String name) {
         if (paramsMap.containsKey(name)) {
-            return paramsMap.get(name);
+            String value = paramsMap.get(name);
+            usedParams.remove(name);
+            return value;
         }
         throw new RuntimeException("Can't find parameter '" + name + "'");
     }
@@ -124,13 +127,17 @@ public class WithParamsRule implements MethodRule {
         private final ErrorCollector errorCollector;
         private Set<String> mExecutedTests;
         private HashMap<String, String> mParamsMap;
+        private HashSet<String> usedParams;
 
-        ParameterizedStatement(final Set<String> executedTests, final HashMap<String, String> paramsMap, final FrameworkMethod method, final Statement base, final ErrorCollector errorCollector) {
+        ParameterizedStatement(final Set<String> executedTests, final HashMap<String, String> paramsMap,
+                               final FrameworkMethod method, final Statement base, final ErrorCollector errorCollector,
+                               HashSet<String> usedParams) {
             mMethod = method;
             mBase = base;
             this.mExecutedTests = executedTests;
             this.mParamsMap = paramsMap;
             this.errorCollector = errorCollector;
+            this.usedParams = usedParams;
         }
 
         @Override
@@ -145,7 +152,9 @@ public class WithParamsRule implements MethodRule {
                 while (values.hasNext()) {
                     mParamsMap.put(names.next(), values.next());
                     if (noMore(names)) {
+                        prepareUsedParams();
                         executeTest();
+                        checkUsedParams();
                         names = prepareToExecute(annotation);
                         tests++;
                     }
@@ -154,6 +163,16 @@ public class WithParamsRule implements MethodRule {
                 errorCollector.verify();
             }
 
+        }
+
+        private void checkUsedParams() throws WithParamsException {
+            if (usedParams.size() > 0) {
+                throw new WithParamsException("Some parameters were never used! " + usedParams);
+            }
+        }
+
+        private void prepareUsedParams() {
+            usedParams.addAll(mParamsMap.keySet());
         }
 
         private void checkParameters(final WithParams annotation) throws WithParamsException {
