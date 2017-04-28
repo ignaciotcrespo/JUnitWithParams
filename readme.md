@@ -61,8 +61,8 @@ Very similar to the great library [JUnitParams](https://github.com/Pragmatists/J
 but not using a JUnit runner, this allows to use parameterised tests with the most used runners (Spring, Robolectric, AndroidJUnit4)
 
 # Current Version
-* The current stable version is `1.0.0`
-* The current snapshot version is `1.0.1-SNAPSHOT`
+* The current stable version is `1.0.2`
+* The current snapshot version is `1.0.2-SNAPSHOT`
 
 # Android support
 JUnitWithParams works fine in android, it is compiled with JDK 1.6 and tested on real projects.
