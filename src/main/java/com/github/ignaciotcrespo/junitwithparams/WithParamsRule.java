@@ -161,8 +161,9 @@ public class WithParamsRule implements MethodRule {
                 }
                 System.out.println("-- Passed " + (tests - errorCollector.getErrors()) + " of " + tests + " tests --\n");
                 errorCollector.verify();
+            } else {
+                mBase.evaluate();
             }
-
         }
 
         private void checkUsedParams() throws WithParamsException {
