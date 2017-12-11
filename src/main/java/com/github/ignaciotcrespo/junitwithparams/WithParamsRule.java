@@ -166,9 +166,10 @@ public class WithParamsRule implements MethodRule {
             }
         }
 
-        private void checkUsedParams() throws WithParamsException {
+        @VisibleForTesting
+        void checkUsedParams() throws WithParamsException {
             if (usedParams.size() > 0) {
-                throw new WithParamsException("Some parameters were never used! " + usedParams);
+                addError(new WithParamsException("Some parameters were never used! " + usedParams));
             }
         }
 
@@ -210,7 +211,8 @@ public class WithParamsRule implements MethodRule {
             System.out.println("Passed " + mParamsMap);
         }
 
-        private void addError(final Throwable exc) throws WithParamsException {
+        @VisibleForTesting
+        void addError(final Throwable exc) throws WithParamsException {
             String message = exc.getMessage();
             errorCollector.addError(new WithParamsException(formatted("Fail! " + mMethod.getName() +
                     "() -> " + mParamsMap
