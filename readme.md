@@ -53,6 +53,20 @@ public class CalculatorTest {
 }
 ```
 
+## Kotlin
+
+Kotlin is supported, but the format for the arrays in the annotations is different
+
+```
+  @WithParams(
+        names = ["n1", "n2", "result"],
+        value = [
+                "1", "2", "3",
+                "11", "-2", "9"
+        ]
+  )
+```
+
 ## About
 
 JUnitWithParams uses the rule `WithParamsRule` to parse the annotation `@WithParams`
