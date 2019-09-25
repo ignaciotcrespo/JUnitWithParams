@@ -55,8 +55,14 @@ public class CalculatorTest {
 
 ## Kotlin
 
-Kotlin is supported, but the format for the arrays in the annotations is different
+Kotlin is supported, with some small differences.
 
+Create rule:
+```
+@get:Rule var params = WithParamsRule()
+```
+
+The format for the arrays in the annotations
 ```
   @WithParams(
         names = ["n1", "n2", "result"],
