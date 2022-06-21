@@ -142,7 +142,13 @@ public class WithParamsRule implements MethodRule {
 
         @Override
         public void evaluate() throws Throwable {
-            WithParams annotation = mMethod.getAnnotation(WithParams.class);
+            WithParams annotation;
+            WithBooleanParams booleanParams = mMethod.getAnnotation(WithBooleanParams.class);
+            if (booleanParams != null) {
+                annotation = createBooleanParamsAnnotation();
+            } else {
+                annotation = mMethod.getAnnotation(WithParams.class);
+            }
             if (annotation != null) {
                 checkDuplicated();
                 checkParameters(annotation);
@@ -236,4 +242,22 @@ public class WithParamsRule implements MethodRule {
         }
     }
 
+    private static WithParams createBooleanParamsAnnotation() {
+        return new WithParams() {
+            @Override
+            public Class<WithParams> annotationType() {
+                return WithParams.class;
+            }
+
+            @Override
+            public String[] names() {
+                return new String[]{PARAM_DEFAULT};
+            }
+
+            @Override
+            public String[] value() {
+                return new String[]{"true", "false"};
+            }
+        };
+    }
 }
