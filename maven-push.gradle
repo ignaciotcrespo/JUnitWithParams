@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return VERSION_NAME.contains("SNAPSHOT")
 }
 
 def getReleaseRepositoryUrl() {
@@ -39,80 +39,71 @@ def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
-                pom.groupId = GROUP
-                pom.artifactId = POM_ARTIFACT_ID
-                pom.version = VERSION_NAME
-
-                repository(url: getReleaseRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = POM_ARTIFACT_ID
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
                 }
-                snapshotRepository(url: getSnapshotRepositoryUrl()) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                usage('java-runtime') {
+                    fromResolutionResult()
                 }
-
-                pom.project {
-                    name POM_NAME
-                    packaging POM_PACKAGING
-                    description POM_DESCRIPTION
-                    url POM_URL
-
-                    scm {
-                        url POM_SCM_URL
-                        connection POM_SCM_CONNECTION
-                        developerConnection POM_SCM_DEV_CONNECTION
+            }
+            pom {
+                name = POM_NAME
+                description = POM_DESCRIPTION
+                url = POM_URL
+                licenses {
+                    license {
+                        name = POM_LICENCE_NAME
+                        url = POM_LICENCE_URL
+                        distribution = POM_LICENCE_DIST
                     }
-
-                    licenses {
-                        license {
-                            name POM_LICENCE_NAME
-                            url POM_LICENCE_URL
-                            distribution POM_LICENCE_DIST
-                        }
+                }
+                developers {
+                    developer {
+                        id = 'ignaciotcrespo'
+                        name = 'Ignacio Tomas Crespo'
+                        email = 'itcrespo@gmail.com'
                     }
-
-                    developers {
-                        developer {
-                            id POM_DEVELOPER_ID
-                            name POM_DEVELOPER_NAME
-                        }
-                    }
+                }
+                scm {
+                    url = POM_SCM_URL
+                    connection = POM_SCM_CONNECTION
+                    developerConnection = POM_SCM_DEV_CONNECTION
                 }
             }
         }
     }
-
-    signing {
-        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
-        sign configurations.archives
+    repositories {
+        maven {
+            def releasesRepoUrl =  getReleaseRepositoryUrl()
+            def snapshotsRepoUrl =  getSnapshotRepositoryUrl()
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username getRepositoryUsername()
+                password getRepositoryPassword()
+            }
+        }
     }
+}
 
-    //task androidJavadocs(type: Javadoc) {
-        //source = android.sourceSets.main.allJava
-    //}
+signing {
+    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    sign publishing.publications.mavenJava
+}
 
-    task myJavadocs(type: Javadoc) {
-        source = sourceSets.main.allJava
-    }
 
-    task javadocsJar(type: Jar, dependsOn: myJavadocs) {
-        classifier = 'javadoc'
-        from myJavadocs.destinationDir
-    }
-//
-    task sourcesJar(type: Jar, dependsOn:classes) {
-        classifier = 'sources'
-        from sourceSets.main.allJava
-        //sourceSets.main.java.sourceFiles
-    }
-
-    artifacts {
-        archives javadocsJar
-        archives sourcesJar
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

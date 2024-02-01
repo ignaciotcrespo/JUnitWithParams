@@ -2,3 +2,5 @@
 *.iml
 .gradle/
 .idea/
+/secring.gpg
+/local.properties
