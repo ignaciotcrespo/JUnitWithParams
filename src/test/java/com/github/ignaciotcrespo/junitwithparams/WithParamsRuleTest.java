@@ -331,4 +331,97 @@ public class WithParamsRuleTest {
         }
     };
 
+    // -----------------------------------------------------------------------
+    // asEnum tests
+    // -----------------------------------------------------------------------
+
+    private enum TestColor { RED, GREEN, BLUE }
+
+    @Test
+    public void asEnum_default() throws Exception {
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put(WithParamsRule.PARAM_DEFAULT, "RED");
+
+        TestColor value = rule.asEnum(TestColor.class);
+
+        assertThat(value).isEqualTo(TestColor.RED);
+    }
+
+    @Test
+    public void asEnum_name() throws Exception {
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put("color", "GREEN");
+
+        TestColor value = rule.asEnum("color", TestColor.class);
+
+        assertThat(value).isEqualTo(TestColor.GREEN);
+    }
+
+    @Test
+    public void asEnum_allConstants() throws Exception {
+        for (TestColor expected : TestColor.values()) {
+            rule.paramsMap = new HashMap<String, String>();
+            rule.paramsMap.put(WithParamsRule.PARAM_DEFAULT, expected.name());
+
+            TestColor value = rule.asEnum(TestColor.class);
+
+            assertThat(value).isEqualTo(expected);
+        }
+    }
+
+    @Test
+    public void asEnum_nullValue_returnsNull() throws Exception {
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put(WithParamsRule.PARAM_DEFAULT, null);
+
+        TestColor value = rule.asEnum(TestColor.class);
+
+        assertThat(value).isNull();
+    }
+
+    @Test
+    public void asEnum_name_nullValue_returnsNull() throws Exception {
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put("color", null);
+
+        TestColor value = rule.asEnum("color", TestColor.class);
+
+        assertThat(value).isNull();
+    }
+
+    @Test
+    public void asEnum_invalidValue_throwsIllegalArgument() throws Exception {
+        thrown.expect(IllegalArgumentException.class);
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put(WithParamsRule.PARAM_DEFAULT, "INVALID_COLOR");
+
+        rule.asEnum(TestColor.class);
+    }
+
+    @Test
+    public void asEnum_name_invalidValue_throwsIllegalArgument() throws Exception {
+        thrown.expect(IllegalArgumentException.class);
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put("color", "NOT_A_COLOR");
+
+        rule.asEnum("color", TestColor.class);
+    }
+
+    @Test
+    public void asEnum_missingKey_throwsRuntimeException() throws Exception {
+        thrown.expect(RuntimeException.class);
+        rule.paramsMap = new HashMap<String, String>();
+
+        rule.asEnum(TestColor.class);
+    }
+
+    @Test
+    public void asEnum_name_missingKey_throwsRuntimeException() throws Exception {
+        thrown.expect(RuntimeException.class);
+        rule.paramsMap = new HashMap<String, String>();
+        rule.paramsMap.put("other", "RED");
+
+        rule.asEnum("color", TestColor.class);
+    }
+
 }
