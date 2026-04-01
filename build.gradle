@@ -1,5 +1,5 @@
 group GROUP
-version VERSION_NAME
+version = System.getenv("VERSION") ?: "DEV"
 
 apply plugin: 'java'
 // for travis-ci

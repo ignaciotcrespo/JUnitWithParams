@@ -83,20 +83,20 @@ publishing {
     }
     repositories {
         maven {
-            def releasesRepoUrl =  getReleaseRepositoryUrl()
-            def snapshotsRepoUrl =  getSnapshotRepositoryUrl()
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ignaciotcrespo/JUnitWithParams")
             credentials {
-                username getRepositoryUsername()
-                password getRepositoryPassword()
+                username = System.getenv("GITHUB_ACTOR") ?: ""
+                password = System.getenv("GITHUB_TOKEN") ?: ""
             }
         }
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-}
+// Signing only needed for Maven Central, not GitHub Packages
+// signing {
+//     sign publishing.publications.mavenJava
+// }
 
 
 javadoc {

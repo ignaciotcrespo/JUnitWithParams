@@ -88,8 +88,28 @@ JUnitWithParams works fine in android, it is compiled with JDK 1.6 and tested on
 
 ## Quickstart
 
-JUnitWithParams is available as Maven artifact:
+JUnitWithParams is published to [GitHub Packages](https://github.com/ignaciotcrespo/JUnitWithParams/packages).
+
+**Gradle:**
+```groovy
+repositories {
+    maven { url "https://maven.pkg.github.com/ignaciotcrespo/JUnitWithParams" }
+}
+
+dependencies {
+    testImplementation 'com.github.ignaciotcrespo:junitwithparams:1.0.7'
+}
 ```
+
+**Maven:**
+```xml
+<repositories>
+  <repository>
+    <id>github</id>
+    <url>https://maven.pkg.github.com/ignaciotcrespo/JUnitWithParams</url>
+  </repository>
+</repositories>
+
 <dependency>
   <groupId>com.github.ignaciotcrespo</groupId>
   <artifactId>junitwithparams</artifactId>
@@ -97,11 +117,18 @@ JUnitWithParams is available as Maven artifact:
   <scope>test</scope>
 </dependency>
 ```
-To use JUnitWithParams in a Gradle build add this to your dependencies:
 
+> **Note:** GitHub Packages requires authentication. See [GitHub's guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry) for setup.
+
+## Releasing a new version
+
+Create and push a version tag:
+```bash
+git tag v1.0.8
+git push origin v1.0.8
 ```
-testImplementation 'com.github.ignaciotcrespo:junitwithparams:1.0.7'
-```
+
+This triggers a GitHub Actions workflow that publishes the artifact to GitHub Packages. The version is derived from the tag name automatically.
 
 # Contribution
 JUnitWithParams is a work in progress, it is stable but of course there are still some edge cases not covered.

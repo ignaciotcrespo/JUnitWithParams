@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JUnitWithParams is a Java library that enables parameterized JUnit 4 tests using a `@Rule` instead of a custom runner. This allows it to work with any JUnit runner (Robolectric, Spring, Mockito, etc.). Published to Maven Central as `com.github.ignaciotcrespo:junitwithparams`.
+JUnitWithParams is a Java library that enables parameterized JUnit 4 tests using a `@Rule` instead of a custom runner. This allows it to work with any JUnit runner (Robolectric, Spring, Mockito, etc.). Published to GitHub Packages as `com.github.ignaciotcrespo:junitwithparams`.
 
 ## Build Commands
 
@@ -28,4 +28,6 @@ The library is a single-module Gradle Java project (source compatibility: Java 1
 
 ## Publishing
 
-Uses `maven-push.gradle` for Sonatype/Maven Central deployment. Credentials (`NEXUS_PASSWORD`, `signing.password`) are passed via command line or `~/.gradle/gradle.properties`.
+Published to GitHub Packages via `maven-push.gradle`. A GitHub Actions workflow (`.github/workflows/release.yml`) automatically publishes when a tag matching `vX.X.X` is pushed. Uses the built-in `GITHUB_TOKEN` — no extra secrets needed.
+
+To release a new version, push a tag: `git tag v1.0.8 && git push origin v1.0.8`. The version is derived from the tag name (strips the `v` prefix).
