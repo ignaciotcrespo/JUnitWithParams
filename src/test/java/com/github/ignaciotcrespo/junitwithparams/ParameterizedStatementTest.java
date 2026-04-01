@@ -33,7 +33,7 @@ public class ParameterizedStatementTest {
         statement = new ParameterizedStatement(
                 Collections.<String>emptySet(),
                 new HashMap<String, String>(),
-                null, null, null, usedParams);
+                null, null, null, usedParams, null);
     }
 
     @Test

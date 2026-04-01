@@ -53,6 +53,129 @@ public class CalculatorTest {
 }
 ```
 
+## `@WithBooleanParams` — true / false shorthand
+
+Runs the test twice: once with `true` and once with `false`. No need to list the values manually.
+
+```java
+@Test
+@WithBooleanParams
+public void toggleFeature() {
+    boolean enabled = params.asBoolean();
+    feature.setEnabled(enabled);
+    assertEquals(enabled, feature.isEnabled());
+}
+```
+
+## `@WithNullParam` — null-safety testing
+
+Runs the test twice: once with the provided non-null value and once with `null`.
+Ideal for verifying that your code handles `null` inputs gracefully.
+
+```java
+@Test
+@WithNullParam("hello")
+public void handlesNull() {
+    String value = params.get(); // "hello" on the first run, null on the second
+    processValue(value);         // must not throw for either case
+}
+```
+
+Use the optional `name` attribute for named parameters:
+
+```java
+@Test
+@WithNullParam(value = "hello", name = "input")
+public void handlesNullNamed() {
+    String value = params.get("input");
+}
+```
+
+## `@WithEnumParams` — iterate over all enum constants
+
+Automatically runs the test once for every constant in the specified enum class.
+The current constant is retrieved via the type-safe `asEnum(Class)` accessor.
+
+```java
+enum Color { RED, GREEN, BLUE }
+
+@Test
+@WithEnumParams(Color.class)
+public void testAllColors() {
+    Color color = params.asEnum(Color.class);
+    assertNotNull(color);
+    renderBackground(color); // called for RED, GREEN, and BLUE
+}
+```
+
+Use the optional `name` attribute for named parameters:
+
+```java
+@Test
+@WithEnumParams(value = Color.class, name = "color")
+public void testAllColorsNamed() {
+    Color color = params.asEnum("color", Color.class);
+    assertNotNull(color);
+}
+```
+
+## `@WithParamsSource` — method-provided parameter sets
+
+Reads parameter sets from a static method in the test class.
+Avoids large annotation arrays and keeps complex data sets as real Java code.
+
+The provider method must be `static`, accept no arguments, and return `String[][]`
+where each inner array is one test iteration. The `names` attribute maps column
+indices to parameter names.
+
+```java
+@Test
+@WithParamsSource(value = "provideNumbers", names = {"n1", "n2", "result"})
+public void sum() {
+    int n1 = params.asInt("n1");
+    int n2 = params.asInt("n2");
+    assertEquals(params.asInt("result"), calculator.sum(n1, n2));
+}
+
+static String[][] provideNumbers() {
+    return new String[][] {
+        {"1",  "2",  "3"},
+        {"11", "-2", "9"}
+    };
+}
+```
+
+Single-parameter shorthand (default name `"param1"`):
+
+```java
+@Test
+@WithParamsSource("provideWords")
+public void wordIsNotEmpty() {
+    String word = params.get();
+    assertFalse(word.isEmpty());
+}
+
+static String[][] provideWords() {
+    return new String[][] { {"hello"}, {"world"}, {"foo"} };
+}
+```
+
+## `asEnum(Class)` — type-safe enum accessor
+
+Converts the current string parameter value to an enum constant by name.
+Returns `null` if the stored value is `null` (e.g. when used with `@WithNullParam`).
+
+```java
+// default parameter
+Color color = params.asEnum(Color.class);
+
+// named parameter
+Color color = params.asEnum("colorParam", Color.class);
+```
+
+The accessor works with any enum and complements the existing typed accessors
+(`asInt()`, `asBoolean()`, `asDouble()`, etc.).
+
 ## Kotlin
 
 Kotlin is supported, with some small differences.
