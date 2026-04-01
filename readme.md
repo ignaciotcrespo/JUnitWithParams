@@ -100,7 +100,7 @@ JUnitWithParams is available as Maven artifact:
 To use JUnitWithParams in a Gradle build add this to your dependencies:
 
 ```
-testCompile 'com.github.ignaciotcrespo:junitwithparams:1.0.7'
+testImplementation 'com.github.ignaciotcrespo:junitwithparams:1.0.7'
 ```
 
 # Contribution
