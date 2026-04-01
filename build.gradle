@@ -1,5 +1,5 @@
-group 'com.github.ignaciotcrespo'
-version '1.0.7'
+group GROUP
+version VERSION_NAME
 
 apply plugin: 'java'
 // for travis-ci
