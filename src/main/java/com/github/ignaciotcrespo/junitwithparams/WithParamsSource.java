@@ -49,7 +49,7 @@ import java.lang.annotation.Target;
  * {@literal @}WithParamsSource("provideWords")
  * public void wordLength() {
  *     String word = params.get();
- *     assertTrue(word.length() > 0);
+ *     assertTrue(word.length() &gt; 0);
  * }
  *
  * static String[][] provideWords() {
